@@ -108,13 +108,22 @@ function updateSpider(sprite){
 
 function updateMoney(sprite){
   let newPos;
-  if (( sprite.xCell === globals.sprites[0].xCell ) && (( sprite.yCell === globals.sprites[0].yCell )) ){
-    newPos = MoneyStaticPos[Math.floor(Math.random()) * 6];
+
+  console.log("----------------------------------");
+  console.log(sprite.xCell );
+  console.log(globals.sprites[0].xCell );
+  console.log(sprite.yCell );
+  console.log(globals.sprites[0].yCell);
+
+  if ( ( sprite.xCell === globals.sprites[0].xCell ) && ( sprite.yCell === globals.sprites[0].yCell ) ){
+    let newIndex = Math.floor(Math.random() * 6 );
+
+    console.log("Index" + newIndex);
+    newPos = MoneyStaticPos[newIndex];
 
     sprite.xCell = newPos.XCELL;
     sprite.yCell = newPos.YCELL;
   }
-
 }
 
 //From Collisions between sprites tutorial
@@ -176,45 +185,6 @@ function readKeyboardAndAssignState(sprite){
 }
 
 
-
-
-
-// //From bouncing movement tutorial
-// // ¿No tiene más sentido que se encuentre este código en physics o incluso en alguna clase que lo herede?
-// function calculateCollisionWithFourBorders(sprite){
-
-//   if      (sprite.xPos + sprite.imageSet.xSize > globals.canvas.width){
-//     sprite.collisionBorder = Collision.BORDER_RIGHT;
-//   }
-
-//   else if (sprite.xPos < 0){
-//     sprite.collisionBorder = Collision.BORDER_LEFT;
-//   }
-//   else if (sprite.yPos < 0){
-//     sprite.collisionBorder = Collision.BORDER_UP;
-
-//   }
-//   else if (sprite.yPos + sprite.imageSet.ySize > globals.canvas.height){
-//     sprite.collisionBorder = Collision.BORDER_DOWN;
-
-//   }
-//   else{
-//     sprite.collisionBorder = Collision.NO_COLLISION;
-
-//   }
-// }
-
-// //From Collisions between sprites tutorial
-// function updateLife(){
-//   for( let i = 0; i < globals.sprites.length; i++){
-//     const sprite = globals.sprites[i];
-
-//     if (sprite.isCollidingWithPlayer){
-//       // Si hay colisión reducimos la vida
-//       globals.life--;
-//     }
-//   }
-// }
 
 
 

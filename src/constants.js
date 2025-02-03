@@ -95,7 +95,7 @@ export const MoneyStaticPos = [
     },
     {
         XCELL   : 11,
-        YCELL   : 7
+        YCELL   : 6
     },
     {
         XCELL   : 12,
