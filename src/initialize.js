@@ -60,7 +60,8 @@ function initVars() {
     // timesAnimation              : 0,
     // throwableReloadTime         : (1/2),  
     // isReloading                 : false,
-    life  : 3
+    life  : 3,
+    score : 0
   }
 
   // globals.life = 400;

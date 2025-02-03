@@ -35,6 +35,8 @@ function drawGame() {
   // Dibujamos los elementos
   drawSprites();
 
+  renderHUD();
+
 }
 
 function drawSprites() {
@@ -135,4 +137,22 @@ function renderMap() {
 
 // }
 
+function renderHUD(){
+  const score  = globals.player.score;
+  const life = globals.player.life;
 
+
+
+  //Draw score
+  globals.ctx.fillStyle = "white";
+  globals.ctx.fillText("SCORE", 50, 20);
+  globals.ctx.fillStyle = "lightgray";
+  globals.ctx.fillText(score, globals.canvas.width/2, 20);
+
+
+  globals.ctx.fillStyle = "red";
+
+  globals.ctxHUD.fillRect(globals.canvas.width/2 + globals.canvas.width/4, firstRow + 8, globals.life * 0.2, 8);
+
+
+}

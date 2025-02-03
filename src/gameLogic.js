@@ -123,6 +123,8 @@ function updateMoney(sprite){
 
     sprite.xCell = newPos.XCELL;
     sprite.yCell = newPos.YCELL;
+
+    globals.player.score
   }
 }
 
