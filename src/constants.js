@@ -26,8 +26,7 @@ export const State = {
 }
 
 export const TimerIndex = {
-    LEVEL_TIMER             :       0,
-    PLAYER_THROWABLE_RELOAD :       1,
+    MOVEMENT_RELOAD             :       0
 }
 
 // Indicar cual es el valor que tiene cada sprite (cada caracter UNICODE)
@@ -80,3 +79,30 @@ export const Collision = {
     BORDER_LEFT             :   2,
     BORDER_RIGHT            :   3,
 }
+
+export const MoneyStaticPos = [
+    {
+        XCELL   : 5,
+        YCELL   : 9
+    },
+    {
+        XCELL   : 6,
+        YCELL   : 4
+    },
+    {
+        XCELL   : 13,
+        YCELL   : 3
+    },
+    {
+        XCELL   : 11,
+        YCELL   : 7
+    },
+    {
+        XCELL   : 12,
+        YCELL   : 8
+    },
+    {
+        XCELL   : 4,
+        YCELL   : 8
+    }
+];

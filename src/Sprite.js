@@ -19,12 +19,14 @@ export default class Sprite{
 
     // }
 
-    constructor(id, state, imageChar ,xPos, yPos, hitBox){
+    constructor(id, state, imageChar ,xCell, yCell, gridSize, physics, hitBox){
         this.id                                     =   id;       // Tipo del Sprite
         this.state                                  =   state;    // Estado de la animación del Sprite
         this.imageChar                              =   imageChar;//
-        this.xPos                                   =   xPos;     // Posición en X en Canvas
-        this.yPos                                   =   yPos;     // Posición en Y en Canvas
+        this.xCell                                 =   xCell;     // Posición en X en Canvas
+        this.yCell                                  =   yCell;     // Posición en Y en Canvas
+        this.gridSize                               =   gridSize;
+        this.physics                                =   physics;
         this.hitBox                                 =   hitBox;   // Datos del hitbox
         this.isCollidingWithPlayer                  =   false;    // Variable que indica si ha habido colisión con el player
         this.isCollidingWithObstacleOnTheTop        =   false;

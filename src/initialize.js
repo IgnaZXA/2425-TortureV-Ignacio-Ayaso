@@ -7,6 +7,7 @@ import Timer from "./Timer.js";
 import { keydownHandler, keyupHandler } from "./events.js";
 // import { setEvilWizardPosition } from "./gameLogic.js";
 import HitBox from "./HitBox.js";
+import Physics from "./Physics.js";
 
 //Función que inicializa los elementos HTML
 function initHTMLelements() {
@@ -46,9 +47,12 @@ function initVars() {
   globals.action = {
     moveLeft    : false,
     moveRight   : false,
-    moveUP      : false,
+    moveUp      : false,
     moveDown    : false,
   }
+
+
+  console.log(globals.action);
 
   globals.player = {
     // animationCyclic             : true,
@@ -66,17 +70,17 @@ function initVars() {
 //Timer
 export function initTimers(){
 
-  globals.timers[TimerIndex.LEVEL_TIMER]                = new Timer(200, 1.0);
-  globals.timers[TimerIndex.PLAYER_THROWABLE_RELOAD]    = new Timer(2, 0.5);
+  globals.timers[TimerIndex.MOVEMENT_RELOAD]    = new Timer(1, 0.2); // 5 casillas por segundo
 
-  // console.log(globals.timers);
 }
 
 export function initEvents(){
 
   // Add the keyboard event listeners
+
   window.addEventListener("keydown", keydownHandler, false);
   window.addEventListener("keyup", keyupHandler, false);
+
 
 }
 
@@ -119,24 +123,37 @@ function loadHandler() {
 
 }
 
+
+function initLevel() {
+  // Creamos las propiedades de las imagenes del mapa: initFil, initCol, xSize, ySize, gridSize, xOffset, yOffset
+  // const imageSet = new ImageSet(0, 0, 20, 20, 20, 0, 0);
+
+  const blockSize = 16;
+
+  // Creamos y guardamos nuestro nivel
+  globals.level = new Level(level1, blockSize);
+}
+
 //Inicializar los Sprites
 function initSprites() {
   
   // Initialize Characters
   initPlayer();
 
+  initMoney();
+
 }
 
 //Añade al array global "sprites"
 function initPlayer() {
-  //Fila 0 del SpriteSheet
 
+  const physics = new Physics(Math.floor(5 * 16));
 
-  const hitBox = new HitBox(23, 45, 20, 15);
+  const hitBox = new HitBox(14, 14, 0, 0);
 
   // Creamos nuestro sprite
-  const player = new Sprite(SpriteID.PLAYER, State.STILL, UniChars.PLAYER, 0, 0, hitBox); //Iy = 160 cuando termines con colisiones
-  //                        id               state        Ix   Iy   Frame   Physics, hitbox
+  const player = new Sprite(SpriteID.PLAYER, State.STILL, UniChars.PLAYER, 8, 7, 14, physics, hitBox); //Iy = 160 cuando termines con colisiones
+  //                        id               state                         Ix Iy   Frame   Physics, hitbox
 
 
   // Añadimos el player al array de sprites
@@ -148,18 +165,21 @@ function initSpider(){
 }
 
 function initMoney(){
+  const physics = new Physics(0);
+
+  const hitBox = new HitBox(14, 14, 0, 0);
+
+  // Creamos nuestro sprite
+  const money = new Sprite(SpriteID.MONEY, State.STILL, UniChars.MONEY, 11, 9, 14, physics, hitBox); //Iy = 160 cuando termines con colisiones
+  //                        id               state                         Ix Iy   Frame   Physics, hitbox
+
+  
+
+  // Añadimos el player al array de sprites
+  globals.sprites.push(money);
 
 }
 
-function initLevel() {
-  // Creamos las propiedades de las imagenes del mapa: initFil, initCol, xSize, ySize, gridSize, xOffset, yOffset
-  // const imageSet = new ImageSet(0, 0, 20, 20, 20, 0, 0);
-
-  const blockSize = 16;
-
-  // Creamos y guardamos nuestro nivel
-  globals.level = new Level(level1, blockSize);
-}
 
 //Exportamos las funciones
 export { initHTMLelements, initVars, loadAssets, initSprites, initLevel };

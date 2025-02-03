@@ -1,5 +1,5 @@
 import globals from "./globals.js";
-import {Game, State, SpriteID, GRAVITY, Collision, TimerIndex} from "./constants.js";
+import {Game, State, SpriteID, GRAVITY, Collision, TimerIndex, MoneyStaticPos} from "./constants.js";
 // import detectCollisions from "./collisions.js";
 import Sprite from "./Sprite.js";
 
@@ -38,8 +38,6 @@ function playGame(){
     //Colisiones
     // detectCollisions();
 
-    updateLevelTime();
-
     if(globals.player.isReloading){
       updateReloadTimer();
     }
@@ -65,7 +63,19 @@ function updateSprite(sprite) {
         // Caso del jugador
         case SpriteID.PLAYER:
             updatePlayer(sprite);
-            break;
+          break;
+
+          case SpriteID.SPIDER:
+            updateSpider(sprite);
+          break;
+
+          case SpriteID.MONEY:
+            updateMoney(sprite);
+          break;
+
+          case SpriteID.LIFE:
+            updateLife(sprite);
+          break;
 
         // Otros
         default:
@@ -80,126 +90,89 @@ function updateSprite(sprite) {
 
 // Función que actualiza al player
 function updatePlayer(sprite){
-  //////////////////////////////////////////////////////////////////////////////
-  //  LECTURA DE TECLADO
-  //////////////////////////////////////////////////////////////////////////////
-
-  readKeyboardAndAssignState(sprite);
-  // console.log("----------------------------------------------------------");
-  // console.log("Player State: " + sprite.state);
-
-  switch (sprite.state) {
-    //===========================================================
-    // Move States
-    //
-    case (State.STILL):
-
-    break;
-    
-    //===========================================================
-    default:
-      console.error("Error: Player state invalid");
+  // Reiniciar la velocidad en los ejes X e Y para que no se acumulen.
+  
+  if(globals.timers[TimerIndex.MOVEMENT_RELOAD].value === 0) {
+    readKeyboardAndAssignState(sprite);
+    globals.timers[TimerIndex.MOVEMENT_RELOAD].value = 1;
   }
-
-
-  // sprite.xPos += sprite.physics.vx * globals.deltaTime;
-
-
-  // // Calculamos distancia que se mueve (Y = Y + Vt)
-  // // Ypos seguirá un movimiento unif. acelerado
-  // sprite.yPos += sprite.physics.vy * globals.deltaTime;
-
-
-  // console.log(sprite.isCollidingWithObstacleOnTheBottom);
-
-
-  // if( sprite.isCollidingWithObstacleOnTheBottom){
-  //   sprite.physics.isOnGround = true;
-  // }else{
-  //   sprite.physics.isOnGround = false;
-  // }
-
-  // sprite.physics.vy += sprite.physics.ay * globals.deltaTime;
-
-
-  // //Limitar velocidad hacia abajo para que no caiga tan rápido que pudiera atravesar 1 bloque entero en un instante de tiempo
-  // if(sprite.physics.vy > sprite.vLimit){ // cambiar vLimit si me da problemas
-  //   sprite.physics.vy = sprite.vLimit;
-  // }
-
-  // //Asegurar que el personaje se mueve al menos 1 píxel cuando cae, para así que siempre pueda detectar lcolisión con los bloques en el suelo
-  // if(sprite.physics.vy > 0){
-  //   sprite.yPos += Math.max(sprite.physics.vy * globals.deltaTime, 1);
-  // }else{
-  //   sprite.yPos += sprite.physics.vy * globals.deltaTime;
-  // }
-
-
-  //NO HAY ANIMACIÓN
-
-  // console.log("Is player Attacking?: " + ((sprite.state === State.PLAYER_TO_LEFT_ATTACK_RAISED) ||(sprite.state === State.PLAYER_TO_RIGHT_ATTACK_RAISED) ));
-
+  updateReloadTimer();
 
 }
 
 
 
+function updateSpider(sprite){
 
+}
+
+function updateMoney(sprite){
+  let newPos;
+  if (( sprite.xCell === globals.sprites[0].xCell ) && (( sprite.yCell === globals.sprites[0].yCell )) ){
+    newPos = MoneyStaticPos[Math.floor(Math.random()) * 6];
+
+    sprite.xCell = newPos.XCELL;
+    sprite.yCell = newPos.YCELL;
+  }
+
+}
+
+//From Collisions between sprites tutorial
+function updateLife(){
+  for( let i = 0; i < globals.sprites.length; i++){
+    const sprite = globals.sprites[i];
+
+    if (sprite.isCollidingWithPlayer){
+      // Si hay colisión reducimos la vida
+      globals.life--;
+    }
+  }
+}
 
 
 
 // Timer
-function updateGameTime(){
-    //Incrementamos el contrador
-    globals.gameTime += globals.deltaTime;
-}
-
-function updateLevelTime(){
-
-    // Incrementamos el contador de cambio de valor
-    globals.timers[TimerIndex.LEVEL_TIMER].timeChangeCounter += globals.deltaTime;
-
-    // Si ha pasado el tiempo necesario, cambiamos el valor del timer
-    if(globals.timers[TimerIndex.LEVEL_TIMER].timeChangeCounter > globals.timers[TimerIndex.LEVEL_TIMER].timeChangeValue){
-      globals.timers[TimerIndex.LEVEL_TIMER].value--;
-
-        // Reseteamos timeChangeCOunter
-        globals.timers[TimerIndex.LEVEL_TIMER].timeChangeCounter = 0;
-    }
+// function updateGameTime(){
+//     //Incrementamos el contrador
+//     globals.gameTime += globals.deltaTime;
+// }
 
 
-}
 
 function updateReloadTimer(){
   // Contador que espera a acabar de contar (cuando llegue a cero) para que el player pueda lanzar otra cruz.
 
 
-    // Incrementamos el contador de cambio de valor
-  globals.timers[TimerIndex.PLAYER_THROWABLE_RELOAD].timeChangeCounter += globals.deltaTime;
+  // Incrementamos el contador de cambio de valor
+  globals.timers[TimerIndex.MOVEMENT_RELOAD].timeChangeCounter += globals.deltaTime;
 
         // Si ha pasado el tiempo necesario, cambiamos el valor del timer
-  if(globals.timers[TimerIndex.PLAYER_THROWABLE_RELOAD].timeChangeCounter > globals.timers[TimerIndex.PLAYER_THROWABLE_RELOAD].timeChangeValue){
+  if(globals.timers[TimerIndex.MOVEMENT_RELOAD].timeChangeCounter > globals.timers[TimerIndex.MOVEMENT_RELOAD].timeChangeValue){
 
-    if(globals.timers[TimerIndex.PLAYER_THROWABLE_RELOAD].value > 0){
-      globals.timers[TimerIndex.PLAYER_THROWABLE_RELOAD].value--;
+    if(globals.timers[TimerIndex.MOVEMENT_RELOAD].value > 0){
+      globals.timers[TimerIndex.MOVEMENT_RELOAD].value--;
     }
     
             // Reseteamos timeChangeCOunter
-    globals.timers[TimerIndex.PLAYER_THROWABLE_RELOAD].timeChangeCounter = 0;
+    globals.timers[TimerIndex.MOVEMENT_RELOAD].timeChangeCounter = 0;
   }
 
           
-  if(globals.timers[TimerIndex.PLAYER_THROWABLE_RELOAD].value === 0){
+  if(globals.timers[TimerIndex.MOVEMENT_RELOAD].value === 0){
     globals.player.isReloading = false;
   }
 
 }
 
 
-
-
-
 function readKeyboardAndAssignState(sprite){  
+
+  (globals.action.moveLeft)     ? (sprite.xCell--):
+  (globals.action.moveRight)    ? (sprite.xCell++):
+  (globals.action.moveUp)       ? (sprite.yCell--):
+  (globals.action.moveDown)     ? (sprite.yCell++):
+  true;
+
 }
 
 
@@ -231,16 +204,51 @@ function readKeyboardAndAssignState(sprite){
 //   }
 // }
 
-//From Collisions between sprites tutorial
-function updateLife(){
-  for( let i = 0; i < globals.sprites.length; i++){
-    const sprite = globals.sprites[i];
+// //From Collisions between sprites tutorial
+// function updateLife(){
+//   for( let i = 0; i < globals.sprites.length; i++){
+//     const sprite = globals.sprites[i];
 
-    if (sprite.isCollidingWithPlayer){
-      // Si hay colisión reducimos la vida
-      globals.life--;
-    }
-  }
-}
+//     if (sprite.isCollidingWithPlayer){
+//       // Si hay colisión reducimos la vida
+//       globals.life--;
+//     }
+//   }
+// }
 
+
+
+
+// 
+// function isInACorridor(sprite){
+
+//   const level = globals.level.data;
+//   const blockSize = globals.level.blockSize;
+
+//   console.log(level);
+  
+//   if (  
+//       ( level[sprite.xCell][sprite.yCell + 1] === 1 && level[sprite.xCell][sprite.yCell - 1] === 1)
+//       ||
+//       ( level[sprite.xCell + 1][sprite.yCell] === 1 && level[sprite.xCell - 1][sprite.yCell] === 1)
+//     ){
+//       return true;
+
+//   }else{
+//     return false;
+//   }
+
+// }
+
+// export function AskForACorridorCell(sprite){
+//   let xCell;
+//   let yCell;
+//     while(!isInACorridor(sprite)){
+//       xCell = Math.floor(Math.random() * (globals.level.data.length - 3)) + 3;// 3 a 17;
+//       yCell = Math.floor(Math.random() * (globals.level.data[0].length - 3)) + 3;
+//     }
+
+//     sprite.xCell = xCell;
+//     sprite.yCell = yCell;
+// }
 

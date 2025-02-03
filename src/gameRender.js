@@ -12,7 +12,6 @@ export default function render() {
       break;
 
     case Game.PLAYING:
-      console.log("Hola");
       drawGame();
       break;
 
@@ -29,8 +28,6 @@ export default function render() {
 function drawGame() {
   // Borramos la pantalla entera (tanto la pantalla del juego como el HUD, recordemos que drawGame se ejecuta en el state PLAYING del videojuego).
   globals.ctx.clearRect(0, 0, globals.canvas.width, globals.canvas.height);
-
-  console.log("Paco");
 
   // Dibujamos el mapa (nivel)
   renderMap();
@@ -60,12 +57,9 @@ function renderSprite(sprite) {
   // const xPosInit = sprite.imageSet.initCol * sprite.imageSet.gridSize;
   // const yPosInit = sprite.imageSet.initFil * sprite.imageSet.gridSize;
 
-  // // Calculamos la posición en el tilemap a dibujar
-  // const xTile = xPosInit + sprite.frames.frameCounter * sprite.imageSet.gridSize + sprite.imageSet.xOffset; //FrameCounter va de 0 a framesPerState-1
-  // const yTile = yPosInit + sprite.state * sprite.imageSet.gridSize + sprite.imageSet.yOffset; // El sprite.state indica la fila del archivo spritesheet del que se busca dibujar el frame que se usa.
-
-  // const xPos = Math.floor(sprite.xPos);
-  // const yPos = Math.floor(sprite.yPos);
+  // Calculamos la posición en el tilemap a dibujar
+  const xPos = Math.floor((sprite.xCell + 3) * globals.level.blockSize);
+  const yPos = Math.floor((sprite.yCell + 3)* globals.level.blockSize + sprite.gridSize);
   
   // globals.ctx.drawImage(
   //   // globals.tileSet,                             // The image file
@@ -75,6 +69,11 @@ function renderSprite(sprite) {
   //   xPos, yPos,                                     // The destination x and y position
   //   sprite.imageSet.xSize, sprite.imageSet.ySize    // The destination height and width
   // );
+
+
+  globals.ctx.font = "" + sprite.gridSize + "px serif";
+  globals.ctx.fillText(sprite.imageChar, xPos, yPos);
+
 
 
 }
@@ -112,7 +111,6 @@ function renderMap() {
     globals.ctx.font = "14px serif";
     if(globals.level.data[i][j] === 1){
       globals.ctx.fillText(BlockValue.X1, xPos, yPos);
-
     }
 
     
