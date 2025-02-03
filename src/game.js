@@ -14,20 +14,18 @@ window.onload = init;
 
 
 function init() {
-
-    console.log("HOLAL");
     
     // Inicializamos los elementos HTML: Canvas, Context, Caja de texto de pruebas
     initHTMLelements();
+
+    // Inicialización de variables del juego
+    initVars();
 
     // Cargamos todos los activos: TILEMAPS, IMAGES, SOUNDS
     loadAssets();
 
     // Inicializamos los sprites
     initSprites();
-
-    // Inicialización de variables del juego
-    initVars();
 
     // Inicializamos el mapa del juego
     initLevel();

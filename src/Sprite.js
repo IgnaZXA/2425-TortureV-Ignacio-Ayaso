@@ -2,21 +2,35 @@ import { Collision } from "./constants.js";
 
 export default class Sprite{
 
-    constructor(id, state, xPos, yPos, imageSet, frames, physics, hitBox){
+    // constructor(id, state, xPos, yPos, imageSet, frames, physics, hitBox){
+    //     this.id                                     =   id;       // Tipo del Sprite
+    //     this.state                                  =   state;    // Estado de la animación del Sprite
+    //     this.xPos                                   =   xPos;     // Posición en X en Canvas
+    //     this.yPos                                   =   yPos;     // Posición en Y en Canvas
+    //     this.imageSet                               =   imageSet; // Datos de las imágenes del sprite
+    //     this.frames                                 =   frames;   // Datos de los frames de animación
+    //     this.physics                                =   physics;  // Datos de las físicas.
+    //     this.hitBox                                 =   hitBox;   // Datos del hitbox
+    //     this.isCollidingWithPlayer                  =   false;    // Variable que indica si ha habido colisión con el player
+    //     this.isCollidingWithObstacleOnTheTop        =   false;
+    //     this.isCollidingWithObstacleOnTheLeft       =   false;
+    //     this.isCollidingWithObstacleOnTheBottom     =   false;
+    //     this.isCollidingWithObstacleOnTheRight      =   false;
+
+    // }
+
+    constructor(id, state, imageChar ,xPos, yPos, hitBox){
         this.id                                     =   id;       // Tipo del Sprite
         this.state                                  =   state;    // Estado de la animación del Sprite
+        this.imageChar                              =   imageChar;//
         this.xPos                                   =   xPos;     // Posición en X en Canvas
         this.yPos                                   =   yPos;     // Posición en Y en Canvas
-        this.imageSet                               =   imageSet; // Datos de las imágenes del sprite
-        this.frames                                 =   frames;   // Datos de los frames de animación
-        this.physics                                =   physics;  // Datos de las físicas.
         this.hitBox                                 =   hitBox;   // Datos del hitbox
         this.isCollidingWithPlayer                  =   false;    // Variable que indica si ha habido colisión con el player
         this.isCollidingWithObstacleOnTheTop        =   false;
         this.isCollidingWithObstacleOnTheLeft       =   false;
         this.isCollidingWithObstacleOnTheBottom     =   false;
         this.isCollidingWithObstacleOnTheRight      =   false;
-
     }
 }
 
@@ -30,12 +44,12 @@ export default class Sprite{
 
 //frames: Objeto de la clase Frames, con los datos de los frames de animación.
 
-export class BouncingSprite extends Sprite{
-    constructor (id, state, xPos, yPos, imageSet, frames, physics, hitBox, isCollidingWithPlayer){
+// export class BouncingSprite extends Sprite{
+//     constructor (id, state, xPos, yPos, imageSet, frames, physics, hitBox, isCollidingWithPlayer){
 
-        // Llamamos al constructor de la clase sprite
-        super(id, state, xPos, yPos, imageSet, frames, physics, hitBox, isCollidingWithPlayer);
+//         // Llamamos al constructor de la clase sprite
+//         super(id, state, xPos, yPos, imageSet, frames, physics, hitBox, isCollidingWithPlayer);
 
-        this.collisionBorder = Collision.NO_COLLISION;          //Empezamos No collision
-    }
-}
+//         this.collisionBorder = Collision.NO_COLLISION;          //Empezamos No collision
+//     }
+// }

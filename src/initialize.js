@@ -1,11 +1,9 @@
 import globals from "./globals.js";
 import { Game, SpriteID, State, FPS, TimerIndex, UniChars, BlockValue} from "./constants.js";
-import Sprite, { BouncingSprite } from "./Sprite.js";
-import ImageSet from "./ImageSet.js";
+import Sprite from "./Sprite.js";
 import Frames from "./Frames.js";
 import { Level, level1} from "./Level.js";
 import Timer from "./Timer.js";
-import Physics from "./Physics.js";
 import { keydownHandler, keyupHandler } from "./events.js";
 // import { setEvilWizardPosition } from "./gameLogic.js";
 import HitBox from "./HitBox.js";
@@ -58,13 +56,14 @@ function initVars() {
     // timesAnimation              : 0,
     // throwableReloadTime         : (1/2),  
     // isReloading                 : false,
+    life  : 3
   }
 
-  globals.life = 400;
+  // globals.life = 400;
 
 }
 
-//Timer (tutorial 3)
+//Timer
 export function initTimers(){
 
   globals.timers[TimerIndex.LEVEL_TIMER]                = new Timer(200, 1.0);
@@ -87,17 +86,20 @@ function loadAssets() {
   let tileSet;
 
   // Load the unicode character which will be uses as the map blocks
-  tileSet.addEventListener("load", loadHandler, false); //El tercer parámetro será siempre false (razón?)
-  tileSet = [BlockValue.X1]; //EL MAPA SOLO LO FORMA UN TILE Y NI SI QUIERA ES UNA IMAGEN, ES UN CARACTER UNICODE
+  tileSet = [UniChars.PLAYER, UniChars.SPIDER, UniChars.MONEY, UniChars.LIFE]; // SOLO HAY 4 SPRITES LOS CUALES NI SIQUIERA SON IMAGENES SINO QUE SON CARÁCTERES UNICODE
   globals.tileSets.push(tileSet);
-  globals.assetsToLoad.push(tileSet);
 
   // Load the TileSet image
 //   tileSet = new Image(); //No Imagen ahora es texto
-  tileSet.addEventListener("load", loadHandler, false);
-  tileSet = [UniChars.PLAYER, UniChars.SPIDER, UniChars.MONEY, UniChars.LIFE]; // SOLO HAY 4 SPRITES LOS CUALES NI SIQUIERA SON IMAGENES SINO QUE SON CARÁCTERES UNICODE
+  tileSet = [BlockValue.X1]; //EL MAPA SOLO LO FORMA UN TILE Y NI SI QUIERA ES UNA IMAGEN, ES UN CARACTER UNICODE
   globals.tileSets.push(tileSet);
-  globals.assetsToLoad.push(tileSet);
+
+
+  console.log("Assets finished loading");
+
+  // Stat the game
+  console.log("Game State: " + globals.gameState)
+  globals.gameState = Game.PLAYING;
 }
 
 
@@ -113,10 +115,6 @@ function loadHandler() {
       globals.tileSets[i].removeEventListener("load", loadHandler, false);
     }
 
-    console.log("Assets finished loading");
-
-    // Stat the game
-    globals.gameState = Game.PLAYING;
   }
 
 }
@@ -133,24 +131,13 @@ function initSprites() {
 function initPlayer() {
   //Fila 0 del SpriteSheet
 
-  // Creamos las propiedades de la imagenes: initFil, initCol, xSize, ySize, gridSize, xOffset, yOffset
-  const imageSet = new ImageSet(0, 0, 60, 60, 60, 0, 0);
-
-  // Creamos los datos de la animación. 8 frames / state
-  const frames = new Frames(4, 2);
-
-  //Creamos nuestro objeto physics con vLimit = 40 pixels / seconds
-  const physics = new Physics(65,     0,      1,        -220);
-  //                          vLimit  aLimit  Friction  jumpForce
 
   const hitBox = new HitBox(23, 45, 20, 15);
 
   // Creamos nuestro sprite
-  const player = new Sprite(SpriteID.PLAYER, State.PLAYER_TO_RIGHT_STILL, 150, 460, imageSet, frames, physics, hitBox); //Iy = 160 cuando termines con colisiones
-  //                        id               state                        Ix  Iy   ImageSet  Frame   Physics
+  const player = new Sprite(SpriteID.PLAYER, State.STILL, UniChars.PLAYER, 0, 0, hitBox); //Iy = 160 cuando termines con colisiones
+  //                        id               state        Ix   Iy   Frame   Physics, hitbox
 
-  //Cuando cambie el state el numero de frames por animación es distinto por lo que hay que cambiar la
-  // cantidad de frames dependiendo del estado en el que se encuentre el player
 
   // Añadimos el player al array de sprites
   globals.sprites.push(player);
@@ -166,10 +153,12 @@ function initMoney(){
 
 function initLevel() {
   // Creamos las propiedades de las imagenes del mapa: initFil, initCol, xSize, ySize, gridSize, xOffset, yOffset
-  const imageSet = new ImageSet(0, 0, 20, 20, 20, 0, 0);
+  // const imageSet = new ImageSet(0, 0, 20, 20, 20, 0, 0);
+
+  const blockSize = 16;
 
   // Creamos y guardamos nuestro nivel
-  globals.level = new Level(level1, imageSet);
+  globals.level = new Level(level1, blockSize);
 }
 
 //Exportamos las funciones
