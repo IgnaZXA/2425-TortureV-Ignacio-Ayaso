@@ -1,0 +1,48 @@
+body{
+    background-color: darkslategrey;
+}
+
+#gameScreen {
+
+    /* width : canvas.width * 4 */
+    width: 704px;
+    height: 512px; /* 120 * 4 */
+    /* border: black;
+    border-style: solid; */
+
+    background-color: black;
+
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    /* margin: 200px; */
+    /* 
+        La propiedad CSS image-rendering provee una sugerencia al navegador
+       acerca del algoritmo que debe usar para escalar imágenes.
+
+       https://developer.mozilla.org/es/docs/Web/CSS/image-rendering
+       https://developer.mozilla.org/en-US/docs/Glossary/User_agent
+
+    */
+    
+}
+
+/* 
+
+#gameHUD{
+    width: 1000px;
+    height: 128px;
+    margin-bottom: -5px;
+    background-color: black;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+
+} */
+
+@font-face {
+    font-family: emulogic;
+    src: url("../fonts/emulogic.ttf");
+}
